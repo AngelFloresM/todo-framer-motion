@@ -1,37 +1,52 @@
+html {
+  font-size: 10px;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  margin-top: 200px;
   text-align: center;
 }
 
-.todo__container{
+.todo__container {
+  position: relative;
+  padding: 2rem;
   width: 300px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.todo__container .todo__item{
+.todo__container .todo__item {
+  position: relative;
   background-color: rgb(16, 96, 135);
   padding: 15px;
-  border: 1px solid rgb(63, 149, 191);
+  outline: 1px solid rgb(63, 149, 191);
   border-radius: 10px;
   z-index: 1;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: transform 0.5s ease-in-out;
 }
 
-.todo__container .todo__item:hover{
-  scale: 1.05;
-  box-shadow: 0px 0px 20px rgba(16, 96, 135);
-
+.todo__container .todo__item:hover {
+  /* transform: translateY(-5px); */
 }
 
-.todo__container .todo__item-title{
+.todo__container .todo__item.todo__item--dragging {
+  background-color: rgb(63, 149, 191);
+  border: 1px solid rgb(16, 96, 135);
+  z-index: 2;
+  transition: none;
+}
+
+.todo__container .todo__item-title {
   font-size: 1.5rem;
+  line-height: 2rem;
   font-weight: 400;
   margin-bottom: 1rem;
   text-align: left;
   margin: 0;
+  pointer-events: none;
+  user-select: none;
 }

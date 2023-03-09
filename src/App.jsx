@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useRef } from 'react';
+import TODOItem from './components/TODOItem';
 import './App.css';
 
 const defaultTODOs = [
@@ -8,24 +8,23 @@ const defaultTODOs = [
   { id: 3, name: 'Learn GraphQL', isCompleted: false },
 ];
 
-function TODOList({ name }) {
-  return (
-    <motion.div className="todo__item" draggable layout>
-      <p className="todo__item-title">{name}</p>
-    </motion.div>
-  );
-}
-
 function App() {
+  const containerRef = useRef(null);
+  const [todos, setTodos] = useState(defaultTODOs);
+
   return (
     <div className="App">
-      <div className="todo__container">
-        <AnimatePresence>
-          {defaultTODOs &&
-            defaultTODOs.map((todo) => {
-              return <TODOList key={todo.id} name={todo.name} />;
-            })}
-        </AnimatePresence>
+      <div className="todo__container" ref={containerRef}>
+        {defaultTODOs.map(({ id, name }) => {
+          return (
+            <TODOItem
+              key={id}
+              name={name}
+              id={id}
+              setTodos={setTodos}
+            />
+          );
+        })}
       </div>
     </div>
   );
