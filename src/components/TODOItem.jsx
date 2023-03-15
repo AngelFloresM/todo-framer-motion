@@ -1,43 +1,36 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { TODOSContext } from '../context/todoContext';
 
-export default function TODOItem({ name, id, setTodos }) {
-  const [isDragging, setIsDragging] = useState(false);
+export function TODOItem({ name }) {
+  const {
+    state: { mouse },
+  } = useContext(TODOSContext);
+  const [isBeingDragged, setIsBeingDragged] = useState(false);
   const [currentMousePositionAtStart, setCurrentMousePositionAtStart] =
     useState(0);
-  const itemRef = useRef(null);
 
   useEffect(() => {
-    const itemCenterWithinContainer = itemRef.current.offsetTop + itemRef.current.offsetHeight / 2;
-    console.log(itemCenterWithinContainer);
-  }, []);
-
-  function handleMouseMove(e) {
-    if (!isDragging) return;
-    e.currentTarget.style.transform = `translateY(${
-      e.clientY - currentMousePositionAtStart
-    }px)`;
-  }
+    if (!mouse.isMouseDown) setIsBeingDragged(false);
+  }, [mouse.isMouseDown]);
 
   function handleMouseDown(e) {
+    setIsBeingDragged(true);
     setCurrentMousePositionAtStart(e.clientY);
-    setIsDragging(true);
-  }
-
-  function handleMouseUp(e) {
-    setIsDragging(false);
-    e.currentTarget.style.transform = `translateY(0px)`;
   }
 
   return (
     <div
-      value={name}
-      id={name}
-      className={`todo__item ${isDragging ? 'todo__item--dragging' : ''}`}
+      className={`todo__item ${isBeingDragged ? 'todo__item--dragged' : ''}`}
       onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-      // onMouseLeave={() => setIsDragging(false)}
-      onMouseMove={handleMouseMove}
-      ref={itemRef}
+      style={
+        isBeingDragged
+          ? {
+              transform: `translateY(${
+                mouse.y - currentMousePositionAtStart
+              }px)`,
+            }
+          : { transform: 'translateY(0px)' }
+      }
     >
       <p className="todo__item-title">{name}</p>
     </div>

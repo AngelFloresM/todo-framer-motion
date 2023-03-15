@@ -1,28 +1,56 @@
-const initialState = {
-  todos: [
-    { id: 1, name: 'Learn React', isCompleted: false },
-    { id: 2, name: 'Learn Firebase', isCompleted: false },
-    { id: 3, name: 'Learn GraphQL', isCompleted: false },
-  ],
-};
+import React, { createContext, useState } from 'react';
 
-function reducer(state, action) {
-  switch (action.type) {
-    case 'add':
-      return [...state, action.payload];
-    case 'remove':
-      return state.filter((todo) => todo.id !== action.payload);
-    case 'toggle':
-      return state.map((todo) => {
-        if (todo.id === action.payload) {
-          return {
-            ...todo,
-            completed: !todo.completed,
-          };
-        }
-        return todo;
-      });
-    default:
-      return state;
+export const TODOSContext = createContext();
+
+export function TODOSProvider({ children }) {
+  const [state, setState] = useState({
+    mouse: {
+      y: 0,
+      isMouseDown: false,
+    },
+    TODOS: [
+      { id: 1, name: 'Learn React', isCompleted: false },
+      { id: 2, name: 'Learn Firebase', isCompleted: false },
+      { id: 3, name: 'Learn GraphQL', isCompleted: false },
+    ],
+  });
+
+  function handleMouseDown(e) {
+    setState({
+      ...state,
+      mouse: {
+        y: e.clientY,
+        isMouseDown: true,
+      },
+    });
   }
+
+  function handleMouseUp(e) {
+    setState({
+      ...state,
+      mouse: {
+        ...state.mouse,
+        isMouseDown: false,
+      },
+    });
+  }
+
+  function handleMouseMove(e) {
+    if (!state.mouse.isMouseDown) return;
+    setState({
+      ...state,
+      mouse: {
+        ...state.mouse,
+        y: e.clientY,
+      },
+    });
+  }
+
+  return (
+    <TODOSContext.Provider
+      value={{ state, handleMouseDown, handleMouseUp, handleMouseMove }}
+    >
+      {children}
+    </TODOSContext.Provider>
+  );
 }
