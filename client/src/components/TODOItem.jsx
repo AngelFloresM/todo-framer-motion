@@ -6,6 +6,7 @@ export function TODOItem({ name }) {
     state: { mouse },
   } = useContext(TODOSContext);
   const [isBeingDragged, setIsBeingDragged] = useState(false);
+  const [isOnTop, setIsOnTop] = useState(false);
   const [currentMousePositionAtStart, setCurrentMousePositionAtStart] =
     useState(0);
 
@@ -18,10 +19,18 @@ export function TODOItem({ name }) {
     setCurrentMousePositionAtStart(e.clientY);
   }
 
+  function handleMouseUp(e) {
+    setIsOnTop(true);
+    setTimeout(() => {
+      setIsOnTop(false);
+    }, 500);
+  }
+
   return (
     <div
-      className={`todo__item ${isBeingDragged ? 'todo__item--dragged' : ''}`}
+      className={`todo__item ${isBeingDragged ? 'todo__item--dragged' : ''} ${isOnTop ? 'todo__item--on-top' : ''}`}
       onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
       style={
         isBeingDragged
           ? {

@@ -39,6 +39,10 @@ html {
   transition: none;
 }
 
+.todo__container .todo__item.todo__item--on-top {
+  z-index: 2;
+}
+
 .todo__container .todo__item-title {
   font-size: 1.5rem;
   line-height: 2rem;

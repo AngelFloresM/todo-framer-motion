@@ -46,9 +46,17 @@ export function TODOSProvider({ children }) {
     });
   }
 
+  function handleAddNewTODO(newTODO){
+    const newTODOS = [...state.TODOS, newTODO];
+    setState({
+      ...state,
+      TODOS: newTODOS
+    });
+  }
+
   return (
     <TODOSContext.Provider
-      value={{ state, handleMouseDown, handleMouseUp, handleMouseMove }}
+      value={{ state, handleMouseDown, handleMouseUp, handleMouseMove, handleAddNewTODO }}
     >
       {children}
     </TODOSContext.Provider>
