@@ -11,6 +11,7 @@ export const Form = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
+    if(!todo) return;
     const newTODO = {
       id: Date.now(),
       name: todo,
@@ -24,7 +25,7 @@ export const Form = () => {
     <div>
       <form onSubmit={handleSubmit}>
         <label htmlFor="todo">TODO</label>
-        <input type="text" onChange={handleInputChange} value={todo} />
+        <input type="text" onChange={handleInputChange} value={todo} required/>
         <button type="submit">Add TODO</button>
       </form>
     </div>
